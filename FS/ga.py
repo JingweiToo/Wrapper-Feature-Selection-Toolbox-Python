@@ -82,7 +82,7 @@ def jfs(xtrain, ytrain, opts):
             P1      = X[k1,:]
             P2      = X[k2,:]
             # Random one dimension from 1 to dim
-            index   = np.random.randint(low = 1, high = dim)
+            index   = np.random.randint(low = 1, high = dim-1)
             # Crossover
             x1[i,:] = np.concatenate((P1[0:index] , P2[index:]))
             x2[i,:] = np.concatenate((P2[0:index] , P1[index:]))
