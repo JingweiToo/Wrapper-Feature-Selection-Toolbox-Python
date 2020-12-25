@@ -10,7 +10,7 @@
 
 ## Introduction
 
-* This toolbox offers more than 5 wrapper feature selection methods
+* This toolbox offers 7 wrapper feature selection methods
 * The Demo_PSO provides an example of how to apply PSO on benchmark dataset 
 * Source code of these methods are written based on pseudocode & paper
 
@@ -181,6 +181,7 @@ ax.set_title('GA')
 ax.grid()
 plt.show()
 ```
+
 
 ## Requirement
 
