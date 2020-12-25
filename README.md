@@ -15,6 +15,18 @@
 * Source code of these methods are written based on pseudocode & paper
 
 
+## Usage
+The main function *jfs* is adopted to perform feature selection. You may switch the algorithm by changing the 'from FS.pso import jfs' to [other abbreviations](/README.md#list-of-available-wrapper-feature-selection-methods)
+* If you wish to use particle swarm optimization ( PSO ) then you may write
+```code
+from FS.pso import jfs
+```
+* If you want to use differential evolution ( DE ) then you may write
+```code
+from FS.de import jfs
+```
+
+
 ## Input
 * *feat*   : feature vector matrix ( Instance *x* Features )
 * *label*  : label matrix ( Instance *x* 1 )
@@ -169,3 +181,32 @@ ax.set_title('GA')
 ax.grid()
 plt.show()
 ```
+
+## Requirement
+
+* Python 3 
+* Numpy
+* Pandas
+* Scikit-learn
+* Matplotlib
+
+
+## List of available wrapper feature selection methods
+* Note that the methods are altered so that they can be used in feature selection tasks 
+* The extra parameters represent the parameter(s) other than population size and maximum number of iterations
+* Click on the name of method to view the extra parameter(s)
+* Use the *opts* to set the specific parameter(s)
+
+
+| No. | Abbreviation | Name                                                                                        | Year | Extra Parameters |
+|-----|--------------|---------------------------------------------------------------------------------------------|------|------------------|
+| 07  | ssa          | Salp Swarm Algorithm                                                                        | 2017 | No               |
+| 06  | woa          | [Whale Optimization Algorithm](/Description.md#whale-optimization-algorithm-woa)            | 2016 | Yes              |
+| 05  | sca          | [Sine Cosine Algorithm](/Description.md#sine-cosine-algorithm-sca)                          | 2016 | Yes              |
+| 04  | gwo          | Grey Wolf Optimizer                                                                         | 2014 | No               |
+| 03  | de           | [Differential Evolution](/Description.md#differential-evolution-de)                         | 1997 | Yes              |
+| 02  | ps0          | [Particle Swarm Optimization](/Description.md#particle-swarm-optimization-pso)              | 1995 | Yes              |
+| 01  | ga           | [Genetic Algorithm](/Description.md#genetic-algorithm-ga)                                   | -    | Yes              |
+
+
+
