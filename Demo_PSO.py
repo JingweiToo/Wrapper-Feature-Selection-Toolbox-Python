@@ -12,14 +12,17 @@ data  = data.values
 feat  = np.asarray(data[:, 0:-1])
 label = np.asarray(data[:, -1])
 
-# split data into train & validation using k-fold cross-validation
+# split data into train & validation (70 -- 30)
 xtrain, xtest, ytrain, ytest = train_test_split(feat, label, test_size=0.3, stratify=label)
 fold = {'xt':xtrain, 'yt':ytrain, 'xv':xtest, 'yv':ytest}
 
-# feature selection
-k    = 5
-opts = {'k':k, 'fold':fold, 'N':10, 'T':100, 'w':0.9, 'c1':2, 'c2':2}
+# Parameter
+k    = 5     # k-value in KNN
+N    = 10    # number of particles
+T    = 100   # maximum number of iterations
+opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'w':0.9, 'c1':2, 'c2':2}
 
+# perform feature selection
 fmdl = jfs(feat, label, opts)
 sf   = fmdl['sf']
 
