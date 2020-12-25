@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
-from FS.pso import jfs
+from FS.pso import jfs   # change this to switch algorithm 
 import matplotlib.pyplot as plt
 
 
@@ -16,11 +16,11 @@ label = np.asarray(data[:, -1])
 xtrain, xtest, ytrain, ytest = train_test_split(feat, label, test_size=0.3, stratify=label)
 fold = {'xt':xtrain, 'yt':ytrain, 'xv':xtest, 'yv':ytest}
 
-# Parameter
+# parameter
 k    = 5     # k-value in KNN
 N    = 10    # number of particles
 T    = 100   # maximum number of iterations
-opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'w':0.9, 'c1':2, 'c2':2}
+opts = {'k':k, 'fold':fold, 'N':N, 'T':T}
 
 # perform feature selection
 fmdl = jfs(feat, label, opts)
@@ -37,15 +37,15 @@ y_valid   = ytest.reshape(num_valid)  # Solve bug
 mdl       = KNeighborsClassifier(n_neighbors = k) 
 mdl.fit(x_train, y_train)
 
-# validation accuracy
+# accuracy
 pred      = mdl.predict(x_valid)
 correct   = 0
 for i in range(num_valid):
     if pred[i] == y_valid[i]:
         correct += 1
 
-accuracy = correct / num_valid
-print("Accuracy:", 100 * accuracy)
+Acc = correct / num_valid
+print("Accuracy:", 100 * Acc)
 
 # number of selected features
 num_feat = fmdl['nf']
