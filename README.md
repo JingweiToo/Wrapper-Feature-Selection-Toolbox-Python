@@ -194,8 +194,8 @@ plt.show()
 ## List of available wrapper feature selection methods
 * Note that the methods are altered so that they can be used in feature selection tasks 
 * The extra parameters represent the parameter(s) other than population size and maximum number of iterations
-* Click on the name of method to view the extra parameter(s)
-* Use the *opts* to set the specific parameter(s)
+* Click on the name of method to view how to set the extra parameter(s)
+* If you do not set extra parameters then the algorithm will use default setting in [here](/Description.md)
 
 
 | No. | Abbreviation | Name                                                                                        | Year | Extra Parameters |
@@ -205,7 +205,7 @@ plt.show()
 | 05  | sca          | [Sine Cosine Algorithm](/Description.md#sine-cosine-algorithm-sca)                          | 2016 | Yes              |
 | 04  | gwo          | Grey Wolf Optimizer                                                                         | 2014 | No               |
 | 03  | de           | [Differential Evolution](/Description.md#differential-evolution-de)                         | 1997 | Yes              |
-| 02  | ps0          | [Particle Swarm Optimization](/Description.md#particle-swarm-optimization-pso)              | 1995 | Yes              |
+| 02  | pso          | [Particle Swarm Optimization](/Description.md#particle-swarm-optimization-pso)              | 1995 | Yes              |
 | 01  | ga           | [Genetic Algorithm](/Description.md#genetic-algorithm-ga)                                   | -    | Yes              |
 
 
