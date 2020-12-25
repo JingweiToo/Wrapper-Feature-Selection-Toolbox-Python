@@ -1,4 +1,4 @@
-# Jx-FST : Feature Selection Toolbox
+# Jx-WFST : Wrapper Feature Selection Toolbox
 
 ---
 > "Toward Talent Scientist: Sharing and Learning Together"
