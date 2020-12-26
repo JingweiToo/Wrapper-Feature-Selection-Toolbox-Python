@@ -38,13 +38,8 @@ mdl       = KNeighborsClassifier(n_neighbors = k)
 mdl.fit(x_train, y_train)
 
 # accuracy
-pred      = mdl.predict(x_valid)
-correct   = 0
-for i in range(num_valid):
-    if pred[i] == y_valid[i]:
-        correct += 1
-
-Acc = correct / num_valid
+y_pred    = mdl.predict(x_valid)
+Acc       = np.sum(y_valid == y_pred)  / num_valid
 print("Accuracy:", 100 * Acc)
 
 # number of selected features

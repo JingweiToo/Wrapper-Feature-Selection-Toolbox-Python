@@ -24,14 +24,9 @@ def error_rate(xtrain, ytrain, x, opts):
     mdl     = KNeighborsClassifier(n_neighbors = k)
     mdl.fit(xtrain, ytrain)
     # Prediction
-    pred    = mdl.predict(xvalid)
-    correct = 0
-    for i in range(num_valid):
-        if pred[i] == yvalid[i]:
-            correct += 1
-    
-    accuracy = correct / num_valid
-    error    = 1 - accuracy
+    ypred   = mdl.predict(xvalid)
+    acc     = np.sum(yvalid == ypred) / num_valid
+    error   = 1 - acc
     
     return error
 
