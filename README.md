@@ -68,7 +68,10 @@ fold = {'xt':xtrain, 'yt':ytrain, 'xv':xtest, 'yv':ytest}
 k    = 5     # k-value in KNN
 N    = 10    # number of particles
 T    = 100   # maximum number of iterations
-opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'w':0.9, 'c1':2, 'c2':2}
+w    = 0.9
+c1   = 2
+c2   = 2
+opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'w':w, 'c1':c1, 'c2':c2}
 
 # perform feature selection
 fmdl = jfs(feat, label, opts)
@@ -86,13 +89,8 @@ mdl       = KNeighborsClassifier(n_neighbors = k)
 mdl.fit(x_train, y_train)
 
 # accuracy
-pred      = mdl.predict(x_valid)
-correct   = 0
-for i in range(num_valid):
-    if pred[i] == y_valid[i]:
-        correct += 1
-
-Acc = correct / num_valid
+y_pred    = mdl.predict(x_valid)
+Acc       = np.sum(y_valid == y_pred)  / num_valid
 print("Accuracy:", 100 * Acc)
 
 # number of selected features
@@ -137,7 +135,9 @@ fold = {'xt':xtrain, 'yt':ytrain, 'xv':xtest, 'yv':ytest}
 k    = 5     # k-value in KNN
 N    = 10    # number of chromosomes
 T    = 100   # maximum number of generations
-opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'CR':0.8, 'MR':0.01}
+CR   = 0.8
+MR   = 0.01
+opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'CR':CR, 'MR':MR}
 
 # perform feature selection
 fmdl = jfs(feat, label, opts)
@@ -155,13 +155,8 @@ mdl       = KNeighborsClassifier(n_neighbors = k)
 mdl.fit(x_train, y_train)
 
 # accuracy
-pred      = mdl.predict(x_valid)
-correct   = 0
-for i in range(num_valid):
-    if pred[i] == y_valid[i]:
-        correct += 1
-
-Acc = correct / num_valid
+y_pred    = mdl.predict(x_valid)
+Acc       = np.sum(y_valid == y_pred)  / num_valid
 print("Accuracy:", 100 * Acc)
 
 # number of selected features
