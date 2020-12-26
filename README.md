@@ -16,7 +16,7 @@
 
 
 ## Usage
-The main function *jfs* is adopted to perform feature selection. You may switch the algorithm by changing the 'from FS.pso import jfs' to [other abbreviations](/README.md#list-of-available-wrapper-feature-selection-methods)
+The main function *jfs* is adopted to perform feature selection. You may switch the algorithm by changing the 'pso' in 'from FS.pso import jfs' to [other abbreviations](/README.md#list-of-available-wrapper-feature-selection-methods)
 * If you wish to use particle swarm optimization ( PSO ) then you may write
 ```code
 from FS.pso import jfs
