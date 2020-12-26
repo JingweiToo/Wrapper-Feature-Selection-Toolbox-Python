@@ -11,7 +11,7 @@
 ## Introduction
 
 * This toolbox offers 7 wrapper feature selection methods
-* The Demo_PSO provides an example of how to apply PSO on benchmark dataset 
+* The < Demo_PSO > provides an example of how to apply PSO on benchmark dataset 
 * Source code of these methods are written based on pseudocode & paper
 
 
