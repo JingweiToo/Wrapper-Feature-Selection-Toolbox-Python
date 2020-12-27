@@ -10,7 +10,7 @@
 
 ## Introduction
 
-* This toolbox offers 7 wrapper feature selection methods
+* This toolbox offers 8 wrapper feature selection methods
 * The < Demo_PSO > provides an example of how to apply PSO on benchmark dataset 
 * Source code of these methods are written based on pseudocode & paper
 
@@ -196,6 +196,7 @@ plt.show()
 
 | No. | Abbreviation | Name                                                                                        | Year | Extra Parameters |
 |-----|--------------|---------------------------------------------------------------------------------------------|------|------------------|
+| 07  | hho          | Harris Hawk Optimization                                                                    | 2019 | No               |
 | 07  | ssa          | Salp Swarm Algorithm                                                                        | 2017 | No               |
 | 06  | woa          | [Whale Optimization Algorithm](/Description.md#whale-optimization-algorithm-woa)            | 2016 | Yes              |
 | 05  | sca          | [Sine Cosine Algorithm](/Description.md#sine-cosine-algorithm-sca)                          | 2016 | Yes              |
