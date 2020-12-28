@@ -139,7 +139,7 @@ def jfs(xtrain, ytrain, opts):
                 if r >= 0.5 and abs(E) >= 0.5:
                     for d in range(dim):
                         # Delta X (5)
-                        DX = Xrb[0,d] - X[i,d]
+                        DX     = Xrb[0,d] - X[i,d]
                         # Position update (4)
                         X[i,d] = DX - E * abs(J * Xrb[0,d] - X[i,d])
                         # Boundary
@@ -149,7 +149,7 @@ def jfs(xtrain, ytrain, opts):
                 elif r >= 0.5 and abs(E) < 0.5:
                     for d in range(dim):
                         # Delta X (5)
-                        DX = Xrb[0,d] - X[i,d]
+                        DX     = Xrb[0,d] - X[i,d]
                         # Position update (6)
                         X[i,d] = Xrb[0,d] - E * abs(DX)    
                         # Boundary
@@ -192,8 +192,8 @@ def jfs(xtrain, ytrain, opts):
                 elif r < 0.5 and abs(E) < 0.5:
                     # Levy distribution (9)
                     LF = levy_distribution(beta, dim) 
-                    Y     = np.zeros([1, dim], dtype='float')
-                    Z     = np.zeros([1, dim], dtype='float')
+                    Y  = np.zeros([1, dim], dtype='float')
+                    Z  = np.zeros([1, dim], dtype='float')
                     
                     for d in range(dim):
                         # Compute Y (12)
