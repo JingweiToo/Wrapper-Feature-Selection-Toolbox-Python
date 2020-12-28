@@ -55,7 +55,8 @@ def jfs(xtrain, ytrain, opts):
     
     # Pre
     fit   = np.zeros([N, 1], dtype='float')
-    fitG  = float('inf')
+    Xf    = np.zeros([1, dim], dtype='float')
+    fitF  = float('inf')
     curve = np.zeros([1, max_iter], dtype='float') 
     t     = 0
 
@@ -66,42 +67,47 @@ def jfs(xtrain, ytrain, opts):
         # Fitness
         for i in range(N):
             fit[i,0] = Fun(xtrain, ytrain, Xbin[i,:], opts)
-            if fit[i,0] < fitG:
-                Xgb  = X[i,:]
-                fitG = fit[i,0]
-                Gbin = Xbin[i,:]
+            if fit[i,0] < fitF:
+                Xf[0,:] = X[i,:]
+                fitF    = fit[i,0]
         
         # Store result
-        curve[0,t] = fitG
+        curve[0,t] = fitF
         print("Iteration:", t + 1)
         print("Best (SSA):", curve[0,t])
         t += 1
         
  	    # Compute coefficient, c1 (3.2)
         c1 = 2 * np.exp(-(4 * t / max_iter) ** 2)
-        for i in range(N):
-            for d in range(dim):
-                # First leader update
-                if i == 0:   
+        
+        for i in range(N):          
+            # First leader update
+            if i == 0:  
+                for d in range(dim):
                     # Coefficient c2 & c3 [0 ~ 1]
                     c2 = rand() 
                     c3 = rand()
               	    # Leader update (3.1)
                     if c3 >= 0.5: 
-                        X[i,d] = Xgb[d] + c1 * ((ub[0,d] - lb[0,d]) * c2 + lb[0,d])
+                        X[i,d] = Xf[0,d] + c1 * ((ub[0,d] - lb[0,d]) * c2 + lb[0,d])
                     else:
-                        X[i,d] = Xgb[d] - c1 * ((ub[0,d] - lb[0,d]) * c2 + lb[0,d])
-                    
-                # Salp update
-                elif i >= 1:
+                        X[i,d] = Xf[0,d] - c1 * ((ub[0,d] - lb[0,d]) * c2 + lb[0,d])
+                
+                    # Boundary
+                    X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d]) 
+                
+            # Salp update
+            elif i >= 1:
+                for d in range(dim):
                     # Salp update by following front salp (3.4)
                     X[i,d] = (X[i,d] + X[i-1, d]) / 2
-                
-                # Boundary
-                X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d]) 
+                    # Boundary
+                    X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d]) 
         
 
     # Best feature subset
+    Gbin       = binary_conversion(Xf, thres, 1, dim) 
+    Gbin       = Gbin.reshape(dim)
     pos        = np.asarray(range(0, dim))    
     sel_index  = pos[Gbin == 1]
     num_feat   = len(sel_index)

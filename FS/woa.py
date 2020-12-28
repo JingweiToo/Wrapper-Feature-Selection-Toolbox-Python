@@ -61,13 +61,14 @@ def jfs(xtrain, ytrain, opts):
     
     # Fitness at first iteration
     fit  = np.zeros([N, 1], dtype='float')
+    Xgb  = np.zeros([1, dim], dtype='float')
     fitG = float('inf')
+    
     for i in range(N):
         fit[i,0] = Fun(xtrain, ytrain, Xbin[i,:], opts)
         if fit[i,0] < fitG:
-            Xgb  = X[i,:]
-            fitG = fit[i,0]
-            Gbin = Xbin[i,:]
+            Xgb[0,:] = X[i,:]
+            fitG     = fit[i,0]
         
     # Pre
     curve = np.zeros([1, max_iter], dtype='float') 
@@ -81,6 +82,7 @@ def jfs(xtrain, ytrain, opts):
     while t < max_iter:
         # Define a, linearly decreases from 2 to 0 
         a = 2 - t * (2 / max_iter)
+        
         for i in range(N):
             # Parameter A (2.3)
             A = 2 * a * rand() - a
@@ -96,9 +98,9 @@ def jfs(xtrain, ytrain, opts):
                 if abs(A) < 1:
                     for d in range(dim):
                         # Compute D (2.1)
-                        Dx     = abs(C * Xgb[d] - X[i,d])
+                        Dx     = abs(C * Xgb[0,d] - X[i,d])
                         # Position update (2.2)
-                        X[i,d] = Xgb[d] - A * Dx
+                        X[i,d] = Xgb[0,d] - A * Dx
                         # Boundary
                         X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d])
                 # {2} Search for prey
@@ -116,9 +118,9 @@ def jfs(xtrain, ytrain, opts):
             elif p >= 0.5:
                 for d in range(dim):
                     # Distance of whale to prey
-                    dist   = abs(Xgb[d] - X[i,d])
+                    dist   = abs(Xgb[0,d] - X[i,d])
                     # Position update (2.5)
-                    X[i,d] = dist * np.exp(b * l) * np.cos(2 * np.pi * l) + Xgb[d] 
+                    X[i,d] = dist * np.exp(b * l) * np.cos(2 * np.pi * l) + Xgb[0,d] 
                     # Boundary
                     X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d])
         
@@ -129,9 +131,8 @@ def jfs(xtrain, ytrain, opts):
         for i in range(N):
             fit[i,0] = Fun(xtrain, ytrain, Xbin[i,:], opts)
             if fit[i,0] < fitG:
-                Xgb      = X[i,:]
+                Xgb[0,:] = X[i,:]
                 fitG     = fit[i,0]
-                Gbin     = Xbin[i,:]
         
         # Store result
         curve[0,t] = fitG
@@ -141,6 +142,8 @@ def jfs(xtrain, ytrain, opts):
 
             
     # Best feature subset
+    Gbin       = binary_conversion(Xgb, thres, 1, dim) 
+    Gbin       = Gbin.reshape(dim)    
     pos        = np.asarray(range(0, dim))    
     sel_index  = pos[Gbin == 1]
     num_feat   = len(sel_index)

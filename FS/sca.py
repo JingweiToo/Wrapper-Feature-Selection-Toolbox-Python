@@ -58,7 +58,8 @@ def jfs(xtrain, ytrain, opts):
     
     # Pre
     fit   = np.zeros([N, 1], dtype='float')
-    fitG  = float('inf')
+    Xdb   = np.zeros([1, dim], dtype='float')
+    fitD  = float('inf')
     curve = np.zeros([1, max_iter], dtype='float') 
     t     = 0
 
@@ -69,19 +70,19 @@ def jfs(xtrain, ytrain, opts):
         # Fitness
         for i in range(N):
             fit[i,0] = Fun(xtrain, ytrain, Xbin[i,:], opts)
-            if fit[i,0] < fitG:
-                Xgb  = X[i,:]
-                fitG = fit[i,0]
-                Gbin = Xbin[i,:]
+            if fit[i,0] < fitD:
+                Xdb[0,:] = X[i,:]
+                fitD     = fit[i,0]
         
         # Store result
-        curve[0,t] = fitG
+        curve[0,t] = fitD
         print("Iteration:", t + 1)
         print("Best (SCA):", curve[0,t])
         t += 1
         
         # Parameter r1, decreases linearly from alpha to 0 (3.4)
         r1 = alpha - t * (alpha / max_iter)
+        
         for i in range(N):
             for d in range(dim):
                 # Random parameter r2 & r3 & r4
@@ -91,17 +92,18 @@ def jfs(xtrain, ytrain, opts):
                 # Position update (3.3)
                 if r4 < 0.5:
                     # Sine update (3.1)
-                    X[i,d] = X[i,d] + r1 * np.sin(r2) * abs(r3 * Xgb[d] - X[i,d]) 
+                    X[i,d] = X[i,d] + r1 * np.sin(r2) * abs(r3 * Xdb[0,d] - X[i,d]) 
                 else:
                     # Cosine update (3.2)
-                    X[i,d] = X[i,d] + r1 * np.cos(r2) * abs(r3 * Xgb[d] - X[i,d])
+                    X[i,d] = X[i,d] + r1 * np.cos(r2) * abs(r3 * Xdb[0,d] - X[i,d])
                 
                 # Boundary
                 X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d]) 
-        
     
     
     # Best feature subset
+    Gbin       = binary_conversion(Xdb, thres, 1, dim) 
+    Gbin       = Gbin.reshape(dim)
     pos        = np.asarray(range(0, dim))    
     sel_index  = pos[Gbin == 1]
     num_feat   = len(sel_index)

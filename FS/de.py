@@ -64,17 +64,16 @@ def jfs(xtrain, ytrain, opts):
     
     # Fitness at first iteration
     fit   = np.zeros([N, 1], dtype='float')
+    Xgb   = np.zeros([1, dim], dtype='float')
     fitG  = float('inf')
+    
     for i in range(N):
         fit[i,0] = Fun(xtrain, ytrain, Xbin[i,:], opts)
         if fit[i,0] < fitG:
-            Xgb  = X[i,:]
-            fitG = fit[i,0]
-            Gbin = Xbin[i,:]
+            Xgb[0,:] = X[i,:]
+            fitG     = fit[i,0]
     
     # Pre
-    V     = np.zeros([N, dim], dtype='float')
-    U     = np.zeros([N, dim], dtype='float')
     curve = np.zeros([1, max_iter], dtype='float') 
     t     = 0
     
@@ -83,7 +82,10 @@ def jfs(xtrain, ytrain, opts):
     print("Best (DE):", curve[0,t])
     t += 1
 
-    while t < max_iter:     
+    while t < max_iter:  
+        V = np.zeros([N, dim], dtype='float')
+        U = np.zeros([N, dim], dtype='float')
+        
         for i in range(N):
             # Choose r1, r2, r3 randomly, but not equal to i 
             RN = np.random.permutation(N)
@@ -112,6 +114,7 @@ def jfs(xtrain, ytrain, opts):
         
         # Binary conversion
         Ubin = binary_conversion(U, thres, N, dim)
+        
         # Selection
         for i in range(N):
             fitU = Fun(xtrain, ytrain, Ubin[i,:], opts)
@@ -119,9 +122,8 @@ def jfs(xtrain, ytrain, opts):
                 X[i,:]   = U[i,:]
                 fit[i,0] = fitU
             if fitU < fitG:
-                Xgb      = U[i,:]
+                Xgb[0,:] = U[i,:]
                 fitG     = fitU
-                Gbin     = Ubin[i,:]
             
                 
         # Store result
@@ -132,6 +134,8 @@ def jfs(xtrain, ytrain, opts):
 
             
     # Best feature subset
+    Gbin       = binary_conversion(Xgb, thres, 1, dim) 
+    Gbin       = Gbin.reshape(dim)
     pos        = np.asarray(range(0, dim))    
     sel_index  = pos[Gbin == 1]
     num_feat   = len(sel_index)

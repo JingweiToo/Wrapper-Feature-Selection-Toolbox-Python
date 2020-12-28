@@ -79,6 +79,7 @@ def jfs(xtrain, ytrain, opts):
     
     # Pre
     fit   = np.zeros([N, 1], dtype='float')
+    Xgb   = np.zeros([1, dim], dtype='float')
     fitG  = float('inf')
     Xpb   = np.zeros([N, dim], dtype='float')
     fitP  = float('inf') * np.ones([N, 1], dtype='float')
@@ -95,10 +96,9 @@ def jfs(xtrain, ytrain, opts):
             if fit[i,0] < fitP[i,0]:
                 Xpb[i,:]  = X[i,:]
                 fitP[i,0] = fit[i,0]
-            if fit[i,0] < fitG:
-                Xgb       = X[i,:]
-                fitG      = fit[i,0]
-                Gbin      = Xbin[i,:]
+            if fitP[i,0] < fitG:
+                Xgb[0,:]  = Xpb[i,:]
+                fitG      = fitP[i,0]
         
         # Store result
         curve[0,t] = fitG
@@ -111,7 +111,7 @@ def jfs(xtrain, ytrain, opts):
                 # Update velocity
                 r1     = rand()
                 r2     = rand()
-                V[i,d] = w * V[i,d] + c1 * r1 * (Xpb[i,d] - X[i,d]) + c2 * r2 * (Xgb[d] - X[i,d]) 
+                V[i,d] = w * V[i,d] + c1 * r1 * (Xpb[i,d] - X[i,d]) + c2 * r2 * (Xgb[0,d] - X[i,d]) 
                 # Boundary
                 V[i,d] = boundary(V[i,d], Vmin[0,d], Vmax[0,d])
                 # Update position
@@ -121,6 +121,8 @@ def jfs(xtrain, ytrain, opts):
     
                 
     # Best feature subset
+    Gbin       = binary_conversion(Xgb, thres, 1, dim) 
+    Gbin       = Gbin.reshape(dim)
     pos        = np.asarray(range(0, dim))    
     sel_index  = pos[Gbin == 1]
     num_feat   = len(sel_index)

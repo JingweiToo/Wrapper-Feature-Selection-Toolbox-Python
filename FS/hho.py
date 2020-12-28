@@ -74,9 +74,9 @@ def jfs(xtrain, ytrain, opts):
     
     # Pre
     fit   = np.zeros([N, 1], dtype='float')
+    Xrb   = np.zeros([1, dim], dtype='float')
     fitR  = float('inf')
-    Y     = np.zeros([1, dim], dtype='float')
-    Z     = np.zeros([1, dim], dtype='float')
+            
     curve = np.zeros([1, max_iter], dtype='float') 
     t     = 0
     
@@ -88,18 +88,18 @@ def jfs(xtrain, ytrain, opts):
         for i in range(N):
             fit[i,0] = Fun(xtrain, ytrain, Xbin[i,:], opts)
             if fit[i,0] < fitR:
-                Xrb       = X[i,:]
-                fitR      = fit[i,0]
-                Gbin      = Xbin[i,:]   
-        
-        # Mean position of hawk (2)
-        X_mu = np.mean(X, axis=0)
-        
+                Xrb[0,:] = X[i,:]
+                fitR     = fit[i,0] 
+                
         # Store result
         curve[0,t] = fitR
         print("Iteration:", t + 1)
         print("Best (HHO):", curve[0,t])
         t += 1
+
+        # Mean position of hawk (2)
+        X_mu      = np.zeros([1, dim], dtype='float')
+        X_mu[0,:] = np.mean(X, axis=0)
         
         for i in range(N):
             # Random number in [-1,1]
@@ -126,7 +126,7 @@ def jfs(xtrain, ytrain, opts):
                     r4 = rand()
                     for d in range(dim):
                         # Update Hawk (1)
-                        X[i,d] = (Xrb[d] - X_mu[d]) - r3 * (lb[0,d] + r4 * (ub[0,d] - lb[0,d]))
+                        X[i,d] = (Xrb[0,d] - X_mu[0,d]) - r3 * (lb[0,d] + r4 * (ub[0,d] - lb[0,d]))
                         # Boundary
                         X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d])
                         
@@ -139,9 +139,9 @@ def jfs(xtrain, ytrain, opts):
                 if r >= 0.5 and abs(E) >= 0.5:
                     for d in range(dim):
                         # Delta X (5)
-                        DX = Xrb[d] - X[i,d]
+                        DX = Xrb[0,d] - X[i,d]
                         # Position update (4)
-                        X[i,d] = DX - E * abs(J * Xrb[d] - X[i,d])
+                        X[i,d] = DX - E * abs(J * Xrb[0,d] - X[i,d])
                         # Boundary
                         X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d])
                         
@@ -149,9 +149,9 @@ def jfs(xtrain, ytrain, opts):
                 elif r >= 0.5 and abs(E) < 0.5:
                     for d in range(dim):
                         # Delta X (5)
-                        DX = Xrb[d] - X[i,d]
+                        DX = Xrb[0,d] - X[i,d]
                         # Position update (6)
-                        X[i,d] = Xrb[d] - E * abs(DX)    
+                        X[i,d] = Xrb[0,d] - E * abs(DX)    
                         # Boundary
                         X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d])
                         
@@ -159,11 +159,16 @@ def jfs(xtrain, ytrain, opts):
                 elif r < 0.5 and abs(E) >= 0.5:
                     # Levy distribution (9)
                     LF = levy_distribution(beta, dim) 
+                    Y  = np.zeros([1, dim], dtype='float')
+                    Z  = np.zeros([1, dim], dtype='float')
+                    
                     for d in range(dim):
                         # Compute Y (7)
-                        Y[0,d] = Xrb[d] - E * abs(J * Xrb[d] - X[i,d])
+                        Y[0,d] = Xrb[0,d] - E * abs(J * Xrb[0,d] - X[i,d])
                         # Boundary
                         Y[0,d] = boundary(Y[0,d], lb[0,d], ub[0,d])
+                        
+                    for d in range(dim):
                         # Compute Z (8)
                         Z[0,d] = Y[0,d] + rand() * LF[d]
                         # Boundary
@@ -179,25 +184,24 @@ def jfs(xtrain, ytrain, opts):
                     if fitY < fit[i,0]:
                         fit[i,0]  = fitY 
                         X[i,:]    = Y
-                        Xbin[i,:] = Ybin
                     if fitZ < fit[i,0]:
                         fit[i,0]  = fitZ 
-                        X[i,:]    = Z   
-                        Xbin[i,:] = Zbin
-                    if fit[i,0] < fitR:
-                        Xrb       = X[i,:]
-                        fitR      = fit[i,0]
-                        Gbin      = Xbin[i,:]                       
+                        X[i,:]    = Z                        
 
                 # {4} Hard besiege with progressive rapid dives
                 elif r < 0.5 and abs(E) < 0.5:
                     # Levy distribution (9)
                     LF = levy_distribution(beta, dim) 
+                    Y     = np.zeros([1, dim], dtype='float')
+                    Z     = np.zeros([1, dim], dtype='float')
+                    
                     for d in range(dim):
                         # Compute Y (12)
-                        Y[0,d] = Xrb[d] - E * abs(J * Xrb[d] - X_mu[d])
+                        Y[0,d] = Xrb[0,d] - E * abs(J * Xrb[0,d] - X_mu[0,d])
                         # Boundary
                         Y[0,d] = boundary(Y[0,d], lb[0,d], ub[0,d])
+                    
+                    for d in range(dim):
                         # Compute Z (13)
                         Z[0,d] = Y[0,d] + rand() * LF[d]
                         # Boundary
@@ -213,18 +217,14 @@ def jfs(xtrain, ytrain, opts):
                     if fitY < fit[i,0]:
                         fit[i,0]  = fitY 
                         X[i,:]    = Y
-                        Xbin[i,:] = Ybin
                     if fitZ < fit[i,0]:
                         fit[i,0]  = fitZ 
                         X[i,:]    = Z   
-                        Xbin[i,:] = Zbin
-                    if fit[i,0] < fitR:
-                        Xrb       = X[i,:]
-                        fitR      = fit[i,0]
-                        Gbin      = Xbin[i,:]   
 
 
     # Best feature subset
+    Gbin       = binary_conversion(Xrb, thres, 1, dim) 
+    Gbin       = Gbin.reshape(dim)
     pos        = np.asarray(range(0, dim))    
     sel_index  = pos[Gbin == 1]
     num_feat   = len(sel_index)

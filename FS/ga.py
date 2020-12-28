@@ -46,12 +46,14 @@ def jfs(xtrain, ytrain, opts):
     
     # Fitness at first iteration
     fit   = np.zeros([N, 1], dtype='float')
+    Xgb   = np.zeros([1, dim], dtype='float')
     fitG  = float('inf')
+    
     for i in range(N):
         fit[i,0] = Fun(xtrain, ytrain, X[i,:], opts)
         if fit[i,0] < fitG:
-            Xgb  = X[i,:]
-            fitG = fit[i,0]
+            Xgb[0,:] = X[i,:]
+            fitG     = fit[i,0]
     
     # Pre
     curve = np.zeros([1, max_iter], dtype='float')
@@ -103,8 +105,8 @@ def jfs(xtrain, ytrain, opts):
         for i in range(2 * Nc):
             Fnew[i,0] = Fun(xtrain, ytrain, Xnew[i,:], opts)
             if Fnew[i,0] < fitG:
-                Xgb  = Xnew[i,:]
-                fitG = Fnew[i,0]
+                Xgb[0,:] = Xnew[i,:]
+                fitG     = Fnew[i,0]
                    
         # Store result
         curve[0,t] = fitG
@@ -123,8 +125,9 @@ def jfs(xtrain, ytrain, opts):
        
             
     # Best feature subset
+    Gbin       = Xgb.reshape(dim)
     pos        = np.asarray(range(0, dim))    
-    sel_index  = pos[Xgb == 1]
+    sel_index  = pos[Gbin == 1]
     num_feat   = len(sel_index)
     # Create dictionary
     ga_data = {'sf': sel_index, 'c': curve, 'nf': num_feat}
