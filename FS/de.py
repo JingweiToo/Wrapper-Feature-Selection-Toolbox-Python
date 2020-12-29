@@ -77,7 +77,7 @@ def jfs(xtrain, ytrain, opts):
     curve = np.zeros([1, max_iter], dtype='float') 
     t     = 0
     
-    curve[0,t] = fitG
+    curve[0,t] = fitG.copy()
     print("Generation:", t + 1)
     print("Best (DE):", curve[0,t])
     t += 1
@@ -104,7 +104,7 @@ def jfs(xtrain, ytrain, opts):
                 V[i,d] = boundary(V[i,d], lb[0,d], ub[0,d])
             
             # Random one dimension from 1 to dim
-            index   = np.random.randint(low = 0, high = dim)
+            index = np.random.randint(low = 0, high = dim)
             # crossover (3-4)
             for d in range(dim):
                 if rand() <= CR or d == index:
@@ -121,13 +121,13 @@ def jfs(xtrain, ytrain, opts):
             if fitU <= fit[i,0]:
                 X[i,:]   = U[i,:]
                 fit[i,0] = fitU
-            if fitU < fitG:
-                Xgb[0,:] = U[i,:]
-                fitG     = fitU
+            if fit[i,0] < fitG:
+                Xgb[0,:] = X[i,:]
+                fitG     = fit[i,0]
             
                 
         # Store result
-        curve[0,t] = fitG
+        curve[0,t] = fitG.copy()
         print("Generation:", t + 1)
         print("Best (DE):", curve[0,t])
         t += 1            

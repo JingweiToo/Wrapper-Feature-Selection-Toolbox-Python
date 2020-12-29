@@ -59,7 +59,7 @@ def jfs(xtrain, ytrain, opts):
     curve = np.zeros([1, max_iter], dtype='float')
     t     = 0
     
-    curve[0,t] = fitG
+    curve[0,t] = fitG.copy()
     print("Generation:", t + 1)
     print("Best (GA):", curve[0,t])
     t += 1
@@ -109,7 +109,7 @@ def jfs(xtrain, ytrain, opts):
                 fitG     = Fnew[i,0]
                    
         # Store result
-        curve[0,t] = fitG
+        curve[0,t] = fitG.copy()
         print("Generation:", t + 1)
         print("Best (GA):", curve[0,t])
         t += 1

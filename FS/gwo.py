@@ -81,7 +81,7 @@ def jfs(xtrain, ytrain, opts):
     curve = np.zeros([1, max_iter], dtype='float') 
     t     = 0
     
-    curve[0,t] = Falpha
+    curve[0,t] = Falpha.copy()
     print("Iteration:", t + 1)
     print("Best (GWO):", curve[0,t])
     t += 1
@@ -129,7 +129,7 @@ def jfs(xtrain, ytrain, opts):
                 Xdelta[0,:] = X[i,:]
                 Fdelta      = fit[i,0]
         
-        curve[0,t] = Falpha
+        curve[0,t] = Falpha.copy()
         print("Iteration:", t + 1)
         print("Best (GWO):", curve[0,t])
         t += 1

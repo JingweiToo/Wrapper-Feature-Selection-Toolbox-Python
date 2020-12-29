@@ -42,8 +42,8 @@ def levy_distribution(beta, dim):
     deno  = math.gamma((1 + beta) / 2) * beta * 2 ** ((beta - 1) / 2)
     sigma = (nume / deno) ** (1 / beta)
     # Parameter u & v 
-    u     = np.random.normal(0, 1, dim) * sigma
-    v     = np.random.normal(0, 1, dim)
+    u     = np.random.randn(dim) * sigma
+    v     = np.random.randn(dim)
     # Step 
     step  = u / abs(v) ** (1 / beta)
     LF    = 0.01 * step    
@@ -89,10 +89,10 @@ def jfs(xtrain, ytrain, opts):
             fit[i,0] = Fun(xtrain, ytrain, Xbin[i,:], opts)
             if fit[i,0] < fitR:
                 Xrb[0,:] = X[i,:]
-                fitR     = fit[i,0] 
+                fitR     = fit[i,0]
                 
         # Store result
-        curve[0,t] = fitR
+        curve[0,t] = fitR.copy()
         print("Iteration:", t + 1)
         print("Best (HHO):", curve[0,t])
         t += 1
@@ -183,10 +183,10 @@ def jfs(xtrain, ytrain, opts):
                     # Greedy selection (10)
                     if fitY < fit[i,0]:
                         fit[i,0]  = fitY 
-                        X[i,:]    = Y
+                        X[i,:]    = Y[0,:]
                     if fitZ < fit[i,0]:
-                        fit[i,0]  = fitZ 
-                        X[i,:]    = Z                        
+                        fit[i,0]  = fitZ
+                        X[i,:]    = Z[0,:]                        
 
                 # {4} Hard besiege with progressive rapid dives
                 elif r < 0.5 and abs(E) < 0.5:
@@ -215,11 +215,11 @@ def jfs(xtrain, ytrain, opts):
                     fitZ = Fun(xtrain, ytrain, Zbin[0,:], opts)
                     # Greedy selection (10)
                     if fitY < fit[i,0]:
-                        fit[i,0]  = fitY 
-                        X[i,:]    = Y
+                        fit[i,0]  = fitY
+                        X[i,:]    = Y[0,:]
                     if fitZ < fit[i,0]:
-                        fit[i,0]  = fitZ 
-                        X[i,:]    = Z   
+                        fit[i,0]  = fitZ
+                        X[i,:]    = Z[0,:]  
 
 
     # Best feature subset

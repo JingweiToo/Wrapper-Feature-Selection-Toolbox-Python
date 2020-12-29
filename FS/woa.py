@@ -74,7 +74,7 @@ def jfs(xtrain, ytrain, opts):
     curve = np.zeros([1, max_iter], dtype='float') 
     t     = 0
     
-    curve[0,t] = fitG
+    curve[0,t] = fitG.copy()
     print("Generation:", t + 1)
     print("Best (WOA):", curve[0,t])
     t += 1
@@ -103,6 +103,7 @@ def jfs(xtrain, ytrain, opts):
                         X[i,d] = Xgb[0,d] - A * Dx
                         # Boundary
                         X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d])
+                
                 # {2} Search for prey
                 elif abs(A) >= 1:
                     for d in range(dim):
@@ -114,6 +115,7 @@ def jfs(xtrain, ytrain, opts):
                         X[i,d] = X[k,d] - A * Dx
                         # Boundary
                         X[i,d] = boundary(X[i,d], lb[0,d], ub[0,d])
+            
             # {3} Bubble-net attacking 
             elif p >= 0.5:
                 for d in range(dim):
@@ -135,7 +137,7 @@ def jfs(xtrain, ytrain, opts):
                 fitG     = fit[i,0]
         
         # Store result
-        curve[0,t] = fitG
+        curve[0,t] = fitG.copy()
         print("Generation:", t + 1)
         print("Best (WOA):", curve[0,t])
         t += 1            

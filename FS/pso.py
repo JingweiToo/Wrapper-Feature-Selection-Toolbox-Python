@@ -101,7 +101,7 @@ def jfs(xtrain, ytrain, opts):
                 fitG      = fitP[i,0]
         
         # Store result
-        curve[0,t] = fitG
+        curve[0,t] = fitG.copy()
         print("Iteration:", t + 1)
         print("Best (PSO):", curve[0,t])
         t += 1
