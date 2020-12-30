@@ -3,16 +3,25 @@ from numpy.random import rand
 from FS.functionHO import Fun
 
 
-def init_position(N, dim):
-    X = np.zeros([N, dim], dtype='int')
+def init_position(lb, ub, N, dim):
+    X = np.zeros([N, dim], dtype='float')
     for i in range(N):
         for d in range(dim):
-            if rand() > 0.5:
-                X[i,d] = 1
-            else:
-                X[i,d] = 0
+            X[i,d] = lb[0,d] + (ub[0,d] - lb[0,d]) * rand()        
     
     return X
+
+
+def binary_conversion(X, thres, N, dim):
+    Xbin = np.zeros([N, dim], dtype='int')
+    for i in range(N):
+        for d in range(dim):
+            if X[i,d] > thres:
+                Xbin[i,d] = 1
+            else:
+                Xbin[i,d] = 0
+    
+    return Xbin
 
 
 def roulette_wheel(prob):
@@ -29,6 +38,9 @@ def roulette_wheel(prob):
 
 def jfs(xtrain, ytrain, opts):
     # Parameters
+    ub       = 1
+    lb       = 0
+    thres    = 0.5    
     CR       = 0.8     # crossover rate
     MR       = 0.01    # mutation rate
     
@@ -40,13 +52,20 @@ def jfs(xtrain, ytrain, opts):
         MR   = opts['MR']  
  
      # Dimension
-    dim   = np.size(xtrain, 1)
-    # Initialize position & velocity
-    X     = init_position(N, dim)
+    dim = np.size(xtrain, 1)
+    if np.size(lb) == 1:
+        ub = ub * np.ones([1, dim], dtype='float')
+        lb = lb * np.ones([1, dim], dtype='float')
+        
+    # Initialize position 
+    X     = init_position(lb, ub, N, dim)
+    
+    # Binary conversion
+    X     = binary_conversion(X, thres, N, dim)
     
     # Fitness at first iteration
     fit   = np.zeros([N, 1], dtype='float')
-    Xgb   = np.zeros([1, dim], dtype='float')
+    Xgb   = np.zeros([1, dim], dtype='int')
     fitG  = float('inf')
     
     for i in range(N):
@@ -125,7 +144,8 @@ def jfs(xtrain, ytrain, opts):
        
             
     # Best feature subset
-    Gbin       = Xgb.reshape(dim)
+    Gbin       = Xgb[0,:]
+    Gbin       = Gbin.reshape(dim)
     pos        = np.asarray(range(0, dim))    
     sel_index  = pos[Gbin == 1]
     num_feat   = len(sel_index)

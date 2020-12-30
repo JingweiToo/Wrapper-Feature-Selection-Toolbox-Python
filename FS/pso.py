@@ -70,8 +70,8 @@ def jfs(xtrain, ytrain, opts):
     # Dimension
     dim = np.size(xtrain, 1)
     if np.size(lb) == 1:
-        ub = ub * np.ones([1, dim], dtype='int')
-        lb = lb * np.ones([1, dim], dtype='int')
+        ub = ub * np.ones([1, dim], dtype='float')
+        lb = lb * np.ones([1, dim], dtype='float')
         
     # Initialize position & velocity
     X             = init_position(lb, ub, N, dim)

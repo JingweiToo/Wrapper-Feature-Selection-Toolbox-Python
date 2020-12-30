@@ -56,7 +56,7 @@ def jfs(xtrain, ytrain, opts):
     ub    = 1
     lb    = 0
     thres = 0.5
-    beta  = 1.5
+    beta  = 1.5    # levy component
     
     N        = opts['N']
     max_iter = opts['T']
@@ -66,8 +66,8 @@ def jfs(xtrain, ytrain, opts):
     # Dimension
     dim = np.size(xtrain, 1)
     if np.size(lb) == 1:
-        ub = ub * np.ones([1, dim], dtype='int')
-        lb = lb * np.ones([1, dim], dtype='int')
+        ub = ub * np.ones([1, dim], dtype='float')
+        lb = lb * np.ones([1, dim], dtype='float')
         
     # Initialize position 
     X     = init_position(lb, ub, N, dim)
