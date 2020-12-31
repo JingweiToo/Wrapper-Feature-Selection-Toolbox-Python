@@ -1,6 +1,17 @@
 # Detail Parameter Settings / Default Setting
 Extra parameters of listed methods other than population size / number of solutions and maximum number of iterations
 
+## Bat Algorithm (BA)
+* BA contains 6 extra parameters
+```code 
+fmax   = 2      # maximum frequency
+fmin   = 0      # minimum frequency
+alpha  = 0.9    # constant
+gamma  = 0.9    # constant
+A      = 2      # maximum loudness
+r      = 1      # maximum pulse rate
+opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'fmax':fmax, 'fmin':fmin, 'alpha':alpha, 'gamma':gamma, 'A':A, 'r':r}
+```
 
 ## Differential Evolution (DE)
 * DE contains 2 extra parameters
@@ -10,7 +21,6 @@ F  = 0.5    # constant factor
 opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'CR':CR, 'F':F}
 ```
 
-
 ## Genetic Algorithm (GA)
 * GA contains 2 extra parameters
 ```code 
@@ -18,7 +28,6 @@ CR  = 0.8      # crossover rate
 MR  = 0.01     # mutation rate
 opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'CR':CR, 'MR':MR}
 ```
-
 
 ## Particle Swarm Optimization (PSO)
 * PSO contains 3 extra parameters
@@ -28,7 +37,6 @@ c2  = 2         # social factor
 w   = 0.9       # inertia weight
 opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'w':w, 'c1':c1, 'c2':c2}
 ```
-
 
 ## Sine Cosine Algorithm (SCA)
 * SCA contains 1 extra parameter
