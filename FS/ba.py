@@ -57,10 +57,10 @@ def jfs(xtrain, ytrain, opts):
         alpha  = opts['alpha'] 
     if 'gamma' in opts:
         gamma  = opts['gamma'] 
-    if 'Amax' in opts:
-        A_max  = opts['Amax'] 
-    if 'rmax' in opts:
-        r0_max = opts['rmax'] 
+    if 'A' in opts:
+        A_max  = opts['A'] 
+    if 'r' in opts:
+        r0_max = opts['r'] 
         
     # Dimension
     dim = np.size(xtrain, 1)
