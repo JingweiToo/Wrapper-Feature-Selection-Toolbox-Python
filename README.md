@@ -10,7 +10,7 @@
 
 ## Introduction
 
-* This toolbox offers 9 wrapper feature selection methods
+* This toolbox offers 12 wrapper feature selection methods
 * The < Demo_PSO > provides an example of how to apply PSO on benchmark dataset 
 * Source code of these methods are written based on pseudocode & paper
 
@@ -196,12 +196,15 @@ plt.show()
 
 | No. | Abbreviation | Name                                                                                        | Year | Extra Parameters |
 |-----|--------------|---------------------------------------------------------------------------------------------|------|------------------|
-| 09  | hho          | Harris Hawk Optimization                                                                    | 2019 | No               |
-| 08  | ssa          | Salp Swarm Algorithm                                                                        | 2017 | No               |
-| 07  | woa          | [Whale Optimization Algorithm](/Description.md#whale-optimization-algorithm-woa)            | 2016 | Yes              |
-| 06  | sca          | [Sine Cosine Algorithm](/Description.md#sine-cosine-algorithm-sca)                          | 2016 | Yes              |
-| 05  | gwo          | Grey Wolf Optimizer                                                                         | 2014 | No               |
-| 04  | ba           | [Bat Algorithm](/Description.md#bat-algorithm-ba)                                           | 2010 | Yes              |
+| 12  | hho          | Harris Hawk Optimization                                                                    | 2019 | No               |
+| 11  | ssa          | Salp Swarm Algorithm                                                                        | 2017 | No               |
+| 10  | woa          | [Whale Optimization Algorithm](/Description.md#whale-optimization-algorithm-woa)            | 2016 | Yes              |
+| 09  | sca          | [Sine Cosine Algorithm](/Description.md#sine-cosine-algorithm-sca)                          | 2016 | Yes              |
+| 08  | gwo          | Grey Wolf Optimizer                                                                         | 2014 | No               |
+| 07  | fpa          | [Flower Pollination Algorithm](/Description.md#flower-pollination-algorithm-fpa)            | 2012 | Yes              |
+| 06  | ba           | [Bat Algorithm](/Description.md#bat-algorithm-ba)                                           | 2010 | Yes              |
+| 05  | fa           | [Firefly Algorithm](/Description.md#firefly-algorithm-fa)                                   | 2010 | Yes              |
+| 04  | cs           | [Cuckoo Search Algorithm](/Description.md#cuckoo-search-cs)                                 | 2009 | Yes              |
 | 03  | de           | [Differential Evolution](/Description.md#differential-evolution-de)                         | 1997 | Yes              |
 | 02  | pso          | [Particle Swarm Optimization](/Description.md#particle-swarm-optimization-pso)              | 1995 | Yes              |
 | 01  | ga           | [Genetic Algorithm](/Description.md#genetic-algorithm-ga)                                   | -    | Yes              |
