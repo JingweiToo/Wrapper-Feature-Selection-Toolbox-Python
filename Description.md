@@ -31,17 +31,17 @@ opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'CR':CR, 'F':F}
 ## Firefly Algorithm (FA)
 * FA contains 4 extra parameters
 ```code 
-alpha  = 1;       # constant
-beta0  = 1;       # light amplitude
-gamma  = 1;       # absorbtion coefficient
-theta  = 0.97;    # control alpha
+alpha  = 1       # constant
+beta0  = 1       # light amplitude
+gamma  = 1       # absorbtion coefficient
+theta  = 0.97    # control alpha
 opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'alpha':alpha, 'beta0':beta0, 'gamma':gamma, 'theta':theta}
 ```
 
 ## Flower Pollination Algorithm (FPA)
 * FPA contains 1 extra parameter
 ```code 
-P  = 0.8;      # switch probability
+P  = 0.8      # switch probability
 opts = {'k':k, 'fold':fold, 'N':N, 'T':T, 'P':P}
 ```
 
