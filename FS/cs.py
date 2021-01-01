@@ -1,8 +1,9 @@
-#[2010]-"A new metaheuristic bat-inspired algorithm"
+#[2009]-"Cuckoo search via Levy flights" 
 
 import numpy as np
 from numpy.random import rand
 from FS.functionHO import Fun
+import math
 
 
 def init_position(lb, ub, N, dim):
@@ -33,34 +34,41 @@ def boundary(x, lb, ub):
         x = ub
     
     return x
+
+
+# Levy Flight
+def levy_distribution(beta, dim):
+    # Sigma     
+    nume  = math.gamma(1 + beta) * np.sin(np.pi * beta / 2)
+    deno  = math.gamma((1 + beta) / 2) * beta * 2 ** ((beta - 1) / 2)
+    sigma = (nume / deno) ** (1 / beta) 
+    # Parameter u & v 
+    u     = np.random.randn(dim) * sigma
+    v     = np.random.randn(dim)
+    # Step 
+    step  = u / abs(v) ** (1 / beta)
+    LF    = 0.01 * step
     
+    return LF
+
 
 def jfs(xtrain, ytrain, opts):
     # Parameters
     ub     = 1
     lb     = 0
     thres  = 0.5
-    fmax   = 2      # maximum frequency
-    fmin   = 0      # minimum frequency
-    alpha  = 0.9    # constant
-    gamma  = 0.9    # constant
-    A_max  = 2      # maximum loudness
-    r0_max = 1      # maximum pulse rate
+    Pa     = 0.25     # discovery rate
+    alpha  = 1        # constant
+    beta   = 1.5      # levy component
     
     N          = opts['N']
     max_iter   = opts['T']
-    if 'fmax' in opts:
-        fmax   = opts['fmax'] 
-    if 'fmin' in opts:
-        fmin   = opts['fmin'] 
+    if 'Pa' in opts:
+        Pa   = opts['Pa'] 
     if 'alpha' in opts:
-        alpha  = opts['alpha'] 
-    if 'gamma' in opts:
-        gamma  = opts['gamma'] 
-    if 'A' in opts:
-        A_max  = opts['A'] 
-    if 'r' in opts:
-        r0_max = opts['r'] 
+        alpha   = opts['alpha'] 
+    if 'beta' in opts:
+        beta  = opts['beta'] 
         
     # Dimension
     dim = np.size(xtrain, 1)
@@ -68,9 +76,8 @@ def jfs(xtrain, ytrain, opts):
         ub = ub * np.ones([1, dim], dtype='float')
         lb = lb * np.ones([1, dim], dtype='float')
         
-    # Initialize position & velocity
+    # Initialize position 
     X     = init_position(lb, ub, N, dim)
-    V     = np.zeros([N, dim], dtype='float')
     
     # Binary conversion
     Xbin  = binary_conversion(X, thres, N, dim)
@@ -92,62 +99,76 @@ def jfs(xtrain, ytrain, opts):
     
     curve[0,t] = fitG.copy()
     print("Generation:", t + 1)
-    print("Best (BA):", curve[0,t])
+    print("Best (CS):", curve[0,t])
     t += 1
-    
-    # Initial loudness [1 ~ 2] & pulse rate [0 ~ 1]
-    A  = np.random.uniform(1, A_max, N)
-    r0 = np.random.uniform(0, r0_max, N)
-    r  = r0.copy()
-    
+        
     while t < max_iter:  
         Xnew  = np.zeros([N, dim], dtype='float') 
         
+        # {1} Random walk/Levy flight phase
         for i in range(N):
-            # beta [0 ~1]
-            beta = rand()
-            # frequency (2)
-            freq = fmin + (fmax - fmin) * beta
+            # Levy distribution
+            L = levy_distribution(beta,dim)
             for d in range(dim):
-                # Velocity update (3)
-                V[i,d]    = V[i,d] + (X[i,d] - Xgb[0,d]) * freq 
-                # Position update (4)
-                Xnew[i,d] = X[i,d] + V[i,d]
+                # Levy flight (1)
+                Xnew[i,d] = X[i,d] + alpha * L[d] * (X[i,d] - Xgb[0,d]) 
                 # Boundary
                 Xnew[i,d] = boundary(Xnew[i,d], lb[0,d], ub[0,d])
-                
-            # Generate local solution around best solution
-            if rand() > r[i]:
-                for d in range (dim):
-                    # Epsilon in [-1,1]
-                    eps       = -1 + 2 * rand()
-                    # Random walk (5)
-                    Xnew[i,d] = Xgb[0,d] + eps * np.mean(A)              
-                    # Boundary
-                    Xnew[i,d] = boundary(Xnew[i,d], lb[0,d], ub[0,d])
-            
+      
         # Binary conversion
         Xbin = binary_conversion(Xnew, thres, N, dim)
         
         # Greedy selection
         for i in range(N):
             Fnew = Fun(xtrain, ytrain, Xbin[i,:], opts)
-            if (rand() < A[i])  and  (Fnew <= fit[i,0]):
+            if Fnew <= fit[i,0]:
                 X[i,:]   = Xnew[i,:]
-                fit[i,0] = Fnew
-                # Loudness update (6)
-                A[i]     = alpha * A[i]
-                # Pulse rate update (6)
-                r[i]     = r0[i] * (1 - np.exp(-gamma * t))               
+                fit[i,0] = Fnew             
                 
             if fit[i,0] < fitG:
                 Xgb[0,:] = X[i,:]
                 fitG     = fit[i,0]
-             
+        
+        # {2} Discovery and abandon worse nests phase
+        J  = np.random.permutation(N)
+        K  = np.random.permutation(N)
+        Xj = np.zeros([N, dim], dtype='float')
+        Xk = np.zeros([N, dim], dtype='float')
+        for i in range(N):
+            Xj[i,:] = X[J[i],:]
+            Xk[i,:] = X[K[i],:]
+        
+        Xnew  = np.zeros([N, dim], dtype='float') 
+        
+        for i in range(N): 
+            Xnew[i,:] = X[i,:]
+            r         = rand()
+            for d in range(dim):
+                # A fraction of worse nest is discovered with a probability
+                if rand() < Pa:
+                    Xnew[i,d] = X[i,d] + r * (Xj[i,d] - Xk[i,d])
+                
+                # Boundary
+                Xnew[i,d] = boundary(Xnew[i,d], lb[0,d], ub[0,d])
+        
+        # Binary conversion
+        Xbin = binary_conversion(Xnew, thres, N, dim)
+        
+        # Greedy selection
+        for i in range(N):
+            Fnew = Fun(xtrain, ytrain, Xbin[i,:], opts)
+            if Fnew <= fit[i,0]:
+                X[i,:]   = Xnew[i,:]
+                fit[i,0] = Fnew             
+                
+            if fit[i,0] < fitG:
+                Xgb[0,:] = X[i,:]
+                fitG     = fit[i,0]
+                
         # Store result
         curve[0,t] = fitG.copy()
         print("Generation:", t + 1)
-        print("Best (BA):", curve[0,t])
+        print("Best (CS):", curve[0,t])
         t += 1            
 
             
@@ -158,9 +179,9 @@ def jfs(xtrain, ytrain, opts):
     sel_index  = pos[Gbin == 1]
     num_feat   = len(sel_index)
     # Create dictionary
-    ba_data = {'sf': sel_index, 'c': curve, 'nf': num_feat}
+    cs_data = {'sf': sel_index, 'c': curve, 'nf': num_feat}
     
-    return ba_data  
+    return cs_data  
 
 
             

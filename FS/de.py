@@ -107,7 +107,7 @@ def jfs(xtrain, ytrain, opts):
             index = np.random.randint(low = 0, high = dim)
             # crossover (3-4)
             for d in range(dim):
-                if rand() <= CR or d == index:
+                if (rand() <= CR)  or  (d == index):
                     U[i,d] = V[i,d]
                 else:
                     U[i,d] = X[i,d]
@@ -121,6 +121,7 @@ def jfs(xtrain, ytrain, opts):
             if fitU <= fit[i,0]:
                 X[i,:]   = U[i,:]
                 fit[i,0] = fitU
+                
             if fit[i,0] < fitG:
                 Xgb[0,:] = X[i,:]
                 fitG     = fit[i,0]

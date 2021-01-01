@@ -70,9 +70,11 @@ def jfs(xtrain, ytrain, opts):
         if fit[i,0] < Falpha:
             Xalpha[0,:] = X[i,:]
             Falpha      = fit[i,0]
+            
         if fit[i,0] < Fbeta and fit[i,0] > Falpha:
             Xbeta[0,:]  = X[i,:]
             Fbeta       = fit[i,0]
+            
         if fit[i,0] < Fdelta and fit[i,0] > Fbeta and fit[i,0] > Falpha:
             Xdelta[0,:] = X[i,:]
             Fdelta      = fit[i,0]
@@ -93,21 +95,21 @@ def jfs(xtrain, ytrain, opts):
         for i in range(N):
             for d in range(dim):
                 # Parameter C (3.4)
-                C1 = 2 * rand()
-                C2 = 2 * rand()
-                C3 = 2 * rand()
+                C1     = 2 * rand()
+                C2     = 2 * rand()
+                C3     = 2 * rand()
                 # Compute Dalpha, Dbeta & Ddelta (3.5)
                 Dalpha = abs(C1 * Xalpha[0,d] - X[i,d]) 
                 Dbeta  = abs(C2 * Xbeta[0,d] - X[i,d])
                 Ddelta = abs(C3 * Xdelta[0,d] - X[i,d])
                 # Parameter A (3.3)
-                A1 = 2 * a * rand() - a
-                A2 = 2 * a * rand() - a
-                A3 = 2 * a * rand() - a
+                A1     = 2 * a * rand() - a
+                A2     = 2 * a * rand() - a
+                A3     = 2 * a * rand() - a
                 # Compute X1, X2 & X3 (3.6) 
-                X1 = Xalpha[0,d] - A1 * Dalpha
-                X2 = Xbeta[0,d] - A2 * Dbeta
-                X3 = Xdelta[0,d] - A3 * Ddelta
+                X1     = Xalpha[0,d] - A1 * Dalpha
+                X2     = Xbeta[0,d] - A2 * Dbeta
+                X3     = Xdelta[0,d] - A3 * Ddelta
                 # Update wolf (3.7)
                 X[i,d] = (X1 + X2 + X3) / 3                
                 # Boundary
@@ -122,9 +124,11 @@ def jfs(xtrain, ytrain, opts):
             if fit[i,0] < Falpha:
                 Xalpha[0,:] = X[i,:]
                 Falpha      = fit[i,0]
+                
             if fit[i,0] < Fbeta and fit[i,0] > Falpha:
                 Xbeta[0,:]  = X[i,:]
                 Fbeta       = fit[i,0]
+                
             if fit[i,0] < Fdelta and fit[i,0] > Fbeta and fit[i,0] > Falpha:
                 Xdelta[0,:] = X[i,:]
                 Fdelta      = fit[i,0]

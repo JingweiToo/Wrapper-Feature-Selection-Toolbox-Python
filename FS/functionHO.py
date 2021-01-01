@@ -39,7 +39,7 @@ def Fun(xtrain, ytrain, x, opts):
     # Original feature size
     max_feat = len(x)
     # Number of selected features
-    num_feat = sum(x == 1)
+    num_feat = np.sum(x == 1)
     # Solve if no feature selected
     if num_feat == 0:
         cost  = 1

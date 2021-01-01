@@ -100,8 +100,8 @@ def jfs(xtrain, ytrain, opts):
             # Parent selection
             k1      = roulette_wheel(prob)
             k2      = roulette_wheel(prob)
-            P1      = X[k1,:]
-            P2      = X[k2,:]
+            P1      = X[k1,:].copy()
+            P2      = X[k2,:].copy()
             # Random one dimension from 1 to dim
             index   = np.random.randint(low = 1, high = dim-1)
             # Crossover
