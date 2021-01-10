@@ -1,5 +1,8 @@
 # Jx-WFST : Wrapper Feature Selection Toolbox
 
+[![License](https://img.shields.io/badge/license-BSD_3-blue.svg)](https://github.com/JingweiToo/Wrapper-Feature-Selection-Toolbox-Python/blob/main/LICENSE)
+[![GitHub release](https://img.shields.io/badge/release-pre-yellow.svg)](https://github.com/JingweiToo/Wrapper-Feature-Selection-Toolbox-Python)
+
 ---
 > "Toward Talent Scientist: Sharing and Learning Together"
 >  --- [Jingwei Too](https://jingweitoo.wordpress.com/)
@@ -11,12 +14,12 @@
 ## Introduction
 
 * This toolbox offers 13 wrapper feature selection methods
-* The < Demo_PSO > provides an example of how to apply PSO on benchmark dataset 
+* The `Demo_PSO` provides an example of how to apply PSO on benchmark dataset 
 * Source code of these methods are written based on pseudocode & paper
 
 
 ## Usage
-The main function *jfs* is adopted to perform feature selection. You may switch the algorithm by changing the 'pso' in 'from FS.pso import jfs' to [other abbreviations](/README.md#list-of-available-wrapper-feature-selection-methods)
+The main function `jfs` is adopted to perform feature selection. You may switch the algorithm by changing the `pso` in `from FS.pso import jfs` to [other abbreviations](/README.md#list-of-available-wrapper-feature-selection-methods)
 * If you wish to use particle swarm optimization ( PSO ) then you may write
 ```code
 from FS.pso import jfs
@@ -28,20 +31,20 @@ from FS.de import jfs
 
 
 ## Input
-* *feat*   : feature vector matrix ( Instance *x* Features )
-* *label*  : label matrix ( Instance *x* 1 )
-* *opts*   : parameter settings
-    + *N* : number of solutions / population size ( *for all methods* )
-    + *T* : maximum number of iterations ( *for all methods* )
-    + *k* : *k*-value in *k*-nearest neighbor 
+* *`feat`*   : feature vector matrix ( Instance *x* Features )
+* *`label`*  : label matrix ( Instance *x* 1 )
+* *`opts`*   : parameter settings
+    + *`N`* : number of solutions / population size ( *for all methods* )
+    + *`T`* : maximum number of iterations ( *for all methods* )
+    + *`k`* : *k*-value in *k*-nearest neighbor 
 
 
 ## Output
-* *Acc*  : accuracy of validation model
-* *fmdl* : feature selection model ( It contains several results )
-    + *sf* : index of selected features
-    + *nf* : number of selected features
-    + *c*  : convergence curve
+* *`Acc`*  : accuracy of validation model
+* *`fmdl`* : feature selection model ( It contains several results )
+    + *`sf`* : index of selected features
+    + *`nf`* : number of selected features
+    + *`c`*  : convergence curve
     
     
 ### Example 1 : Particle Swarm Optimization ( PSO ) 
@@ -196,19 +199,19 @@ plt.show()
 
 | No. | Abbreviation | Name                                                                                        | Year | Extra Parameters |
 |-----|--------------|---------------------------------------------------------------------------------------------|------|------------------|
-| 13  | hho          | Harris Hawk Optimization                                                                    | 2019 | No               |
-| 12  | ssa          | Salp Swarm Algorithm                                                                        | 2017 | No               |
-| 11  | woa          | [Whale Optimization Algorithm](/Description.md#whale-optimization-algorithm-woa)            | 2016 | Yes              |
-| 10  | sca          | [Sine Cosine Algorithm](/Description.md#sine-cosine-algorithm-sca)                          | 2016 | Yes              |
-| 09  | ja           | Jaya Algorithm                                                                              | 2016 | No               |
-| 08  | gwo          | Grey Wolf Optimizer                                                                         | 2014 | No               |
-| 07  | fpa          | [Flower Pollination Algorithm](/Description.md#flower-pollination-algorithm-fpa)            | 2012 | Yes              |
-| 06  | ba           | [Bat Algorithm](/Description.md#bat-algorithm-ba)                                           | 2010 | Yes              |
-| 05  | fa           | [Firefly Algorithm](/Description.md#firefly-algorithm-fa)                                   | 2010 | Yes              |
-| 04  | cs           | [Cuckoo Search Algorithm](/Description.md#cuckoo-search-cs)                                 | 2009 | Yes              |
-| 03  | de           | [Differential Evolution](/Description.md#differential-evolution-de)                         | 1997 | Yes              |
-| 02  | pso          | [Particle Swarm Optimization](/Description.md#particle-swarm-optimization-pso)              | 1995 | Yes              |
-| 01  | ga           | [Genetic Algorithm](/Description.md#genetic-algorithm-ga)                                   | -    | Yes              |
+| 13  | `hho`        | Harris Hawk Optimization                                                                    | 2019 | No               |
+| 12  | `ssa`        | Salp Swarm Algorithm                                                                        | 2017 | No               |
+| 11  | `woa`        | [Whale Optimization Algorithm](/Description.md#whale-optimization-algorithm-woa)            | 2016 | Yes              |
+| 10  | `sca`        | [Sine Cosine Algorithm](/Description.md#sine-cosine-algorithm-sca)                          | 2016 | Yes              |
+| 09  | `ja`         | Jaya Algorithm                                                                              | 2016 | No               |
+| 08  | `gwo`        | Grey Wolf Optimizer                                                                         | 2014 | No               |
+| 07  | `fpa`        | [Flower Pollination Algorithm](/Description.md#flower-pollination-algorithm-fpa)            | 2012 | Yes              |
+| 06  | `ba`         | [Bat Algorithm](/Description.md#bat-algorithm-ba)                                           | 2010 | Yes              |
+| 05  | `fa`         | [Firefly Algorithm](/Description.md#firefly-algorithm-fa)                                   | 2010 | Yes              |
+| 04  | `cs`         | [Cuckoo Search Algorithm](/Description.md#cuckoo-search-cs)                                 | 2009 | Yes              |
+| 03  | `de`         | [Differential Evolution](/Description.md#differential-evolution-de)                         | 1997 | Yes              |
+| 02  | `pso`        | [Particle Swarm Optimization](/Description.md#particle-swarm-optimization-pso)              | 1995 | Yes              |
+| 01  | `ga`         | [Genetic Algorithm](/Description.md#genetic-algorithm-ga)                                   | -    | Yes              |
 
 
 
