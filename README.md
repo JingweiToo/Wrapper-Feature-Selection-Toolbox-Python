@@ -194,6 +194,7 @@ plt.show()
 * Note that the methods are altered so that they can be used in feature selection tasks 
 * The extra parameters represent the parameter(s) other than population size and maximum number of iterations
 * Click on the name of method to view how to set the extra parameter(s)
+* Use the *`opts`* to set the specific parameters
 * If you do not set extra parameters then the algorithm will use default setting in [here](/Description.md)
 
 
