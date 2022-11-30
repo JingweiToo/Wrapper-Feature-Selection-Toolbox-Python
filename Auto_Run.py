@@ -40,6 +40,9 @@ class DataPipeline(object):
         self.fmdl = None # Feature Model
 
     def _load_ori_file(self, _ori_path) -> None:
+        '''
+        Load Raw Data File By CSV Path
+        '''
         self.data = pd.read_csv(_ori_path)
         self.data  = self.data.values
         #All Feature
@@ -48,28 +51,41 @@ class DataPipeline(object):
         self.label = np.asarray(self.data[:, -1])
 
     def _data_split(self, ratio:float) -> None:
+        '''
+        Setting Train/Test Ratio
+        '''
         xtrain, xtest, ytrain, ytest = train_test_split(self.feat, self.label, test_size=ratio, stratify=self.label)
         self.fold = {'xt':xtrain, 'yt':ytrain, 'xv':xtest, 'yv':ytest}
 
     def _read_algo_parameter(self, _str_read_meta_para:str) ->None:
+        '''
+        Read Meta Para File
+        '''
         with open('algo_para.yaml', 'r') as _str_read_meta_para:
             self.meta_para = yaml.full_load(_str_read_meta_para)['meta_para']
     
     def _build_fmdl(self, algo_name):
+        '''
+        Construct Each Meta Model 
+        '''
         interface_fmdl = {'pso': jfs_pso,'ga':jfs_ga, 'de':jfs_de, 'ba':jfs_ba, 'cs':jfs_cs, 'fa': jfs_fa, 'fpa':jfs_fpa, 'sca':jfs_sca, 'woa':jfs_woa}
         return interface_fmdl[algo_name]   
 
     def _process_feature_select(self, strMetaName:str, listMetaOpts:list) -> None:
+        """
+        Prepare MetaModel and X Feature Data
+        """
         # perform feature selection
         ## Append Fold Data Into OPTS
-        #print(self._build_fmdl('ga'))
         listMetaOpts['fold'] = self.fold
         #self.fmdl = jfs_ga(self.feat, self.label, listMetaOpts)
         self.fmdl = self._build_fmdl(strMetaName)(self.feat, self.label, listMetaOpts)
         self.sf   = self.fmdl['sf']
     
     def _data_feature_select(self, strMetaName:str, listMetaOpts:list)->None:
-        # model with selected features
+        """
+         model with selected features
+        """
         num_train = np.size(self.fold['xt'], 0)
         num_valid = np.size(self.fold['xv'], 0)
         x_train   = self.fold['xt'][:, self.sf]
