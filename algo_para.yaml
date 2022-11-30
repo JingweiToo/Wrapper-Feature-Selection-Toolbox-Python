@@ -1,0 +1,8 @@
+meta_para:
+- name: pso
+  # k-value in KNN
+  # number of particles
+  # maximum number of iterations
+  opts: {'k': 5, 'N': 10, 'T': 100} 
+- name: ga
+  opts: 300
