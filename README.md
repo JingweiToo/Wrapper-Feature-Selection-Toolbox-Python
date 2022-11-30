@@ -215,4 +215,7 @@ plt.show()
 | 01  | `ga`         | [Genetic Algorithm](/Description.md#genetic-algorithm-ga)                                   | -    | Yes              |
 
 
-
+## Auto run 
+* You can run multiple-model in one python code(Auto_Run.py), compare with model result.
+* Model List: pso, ga, de, ba, cs, fa, fpa, sca, woa
+* Setting File: algo_para.yaml
