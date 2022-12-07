@@ -3,42 +3,14 @@
 import numpy as np
 from numpy.random import rand
 from FS.functionHO import Fun
+from FS.__basic import init_position, binary_conversion, boundary
 
-
-def init_position(lb, ub, N, dim):
-    X = np.zeros([N, dim], dtype='float')
-    for i in range(N):
-        for d in range(dim):
-            X[i,d] = lb[0,d] + (ub[0,d] - lb[0,d]) * rand()        
-    
-    return X
-
-
-def binary_conversion(X, thres, N, dim):
-    Xbin = np.zeros([N, dim], dtype='int')
-    for i in range(N):
-        for d in range(dim):
-            if X[i,d] > thres:
-                Xbin[i,d] = 1
-            else:
-                Xbin[i,d] = 0
-    
-    return Xbin
-
-
-def boundary(x, lb, ub):
-    if x < lb:
-        x = lb
-    if x > ub:
-        x = ub
-    
-    return x
     
 
 def jfs(xtrain, ytrain, opts):
     # Parameters
-    ub     = 1
-    lb     = 0
+    ub     = opts['ub']
+    lb     = opts['lb']
     thres  = 0.5
     
     N          = opts['N']
