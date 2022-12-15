@@ -1,0 +1,43 @@
+meta_para: ## Ref: https://github.com/tongysmember/Wrapper-Feature-Selection-Toolbox-Python/blob/main/Description.md#differential-evolution-de
+- name: pso
+  # K :  k-value in KNN
+  # N :  number of particles
+  # T :  maximum number of iterations
+  opts: {'k': 5, 'N': 10, 'T': 10, 'ub': 1, 'lb': 0} 
+- name: ga
+  # K :  k-value in KNN
+  # N :  number of particles
+  # T :  maximum number of iterations
+  # T
+  # MR
+  opts: {'k': 5, 'N': 10, 'T': 10, 'CR': 0.8, 'MR': 0.01, 'ub': 1, 'lb': 0}
+- name: de
+  # CR : crossover rate
+  # F  : constant factor
+  opts: {'k': 5, 'N': 10, 'T': 10, 'CR': 0.9, 'F': 0.5, 'ub': 1, 'lb': 0}
+- name: ba
+  #fmax   = 2      # maximum frequency
+  #fmin   = 0      # minimum frequency
+  #alpha  = 0.9    # constant
+  #gamma  = 0.9    # constant
+  #A      = 2      # maximum loudness
+  #r      = 1      # maximum pulse rate
+  opts: {'k': 5, 'N': 10, 'T': 10, 'fmax': 2, 'fmin': 0, 'alpha': 0.9, 'gamma': 0.9, 'A': 2, 'r': 1, 'ub': 1, 'lb': 0}
+- name: cs
+  #Pa  = 0.25   # discovery rate
+  opts: {'k': 5, 'N': 10, 'T': 10, 'Pa': 0.25, 'ub': 1, 'lb': 0}
+- name: fa
+  #alpha  = 1       # constant
+  #beta0  = 1       # light amplitude
+  #gamma  = 1       # absorbtion coefficient
+  #theta  = 0.97    # control alpha
+  opts: {'k': 5, 'N': 10, 'T': 10, 'alpha': 1, 'beta0': 1, 'gamma': 1, 'theta': 0.97, 'ub': 1, 'lb': 0}
+- name: fpa
+  #P  = 0.8      # switch probability
+  opts: {'k': 5, 'N': 10, 'T': 10, 'P': 0.8, 'ub': 1, 'lb': 0}
+- name: sca
+  #alpha  = 2    # constant
+  opts: {'k': 5, 'N': 10, 'T': 10, 'alpha': 2, 'ub': 1, 'lb': 0} 
+- name: woa
+  #b  = 1    # constant
+  opts: {'k': 5, 'N': 10, 'T': 10, 'b': 1, 'ub': 1, 'lb': 0}
