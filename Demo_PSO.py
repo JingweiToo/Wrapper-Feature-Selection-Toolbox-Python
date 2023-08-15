@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 # load data
-data  = pd.read_csv('ionosphere.csv')
+data  = pd.read_csv('dataset/luwak_citra.csv')
 data  = data.values
 feat  = np.asarray(data[:, 0:-1])
 label = np.asarray(data[:, -1])
